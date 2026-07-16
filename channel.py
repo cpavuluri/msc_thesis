@@ -2,6 +2,8 @@
 import numpy as np 
 import matplotlib.pyplot as plt
 
+np.random.seed(42)
+
 def rescale(y, bounds, return_coeffs=False):
     M, m = max(y), min(y)
     if M != m:
@@ -24,11 +26,12 @@ def generate_rect(n_samples, n_jumps, bounds):
     return f
 
 
-def generate_ar(n_samples, coef, std_noise, bounds):
-
+def generate_ar(n_samples, coef, std_noise, bounds, seed=42):
+    rng = np.random.default_rng(seed)
     x = np.zeros(n_samples)
     for t in range(1, n_samples):
-        x[t] = coef * x[t-1] + np.random.randn() * std_noise
+        #x[t] = coef * x[t-1] + np.random.randn() * std_noise
+        x[t] = coef * x[t-1] + rng.standard_normal() * std_noise
     x = rescale(x, bounds)
     return x
 
